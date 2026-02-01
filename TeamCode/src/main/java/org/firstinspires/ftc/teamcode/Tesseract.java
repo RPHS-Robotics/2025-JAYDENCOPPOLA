@@ -17,6 +17,9 @@ public class Tesseract extends OpMode {
     public DcMotor motorFR;
     public DcMotor motorBL;
     public DcMotor motorBR;
+    public DcMotor motorArmL;
+    public DcMotor motorArmR;
+
 
     public DcMotor[] motorArray;
     public Vector2 leftJoystick = new Vector2();
@@ -66,6 +69,9 @@ public class Tesseract extends OpMode {
         motorBL = hardwareMap.get(DcMotor.class, "BL");
         motorBR = hardwareMap.get(DcMotor.class, "BR");
 
+        motorArmL = hardwareMap.get(DcMotor.class, "ARML");
+        motorArmR = hardwareMap.get(DcMotor.class, "ARMR");
+
         // Put all the motors for the drive-chain in an array
         motorArray = new DcMotor[]{motorFL, motorFR, motorBL, motorBR};
 
@@ -75,6 +81,8 @@ public class Tesseract extends OpMode {
         motorBL.setDirection(DcMotorSimple.Direction.FORWARD);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        motorArmL.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorArmR.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
@@ -85,6 +93,17 @@ public class Tesseract extends OpMode {
         leftJoystick.y = gamepad1.left_stick_y;
         rightJoystick.x = gamepad1.right_stick_x;
         rightJoystick.y = gamepad1.right_stick_y;
+
+        if (gamepad1.a) {
+            motorArmL.setPower(1);
+            motorArmR.setPower(1);
+        } else if (gamepad1.b) {
+            motorArmL.setPower(-1);
+            motorArmR.setPower(-1);
+        } else {
+            motorArmL.setPower(0);
+            motorArmR.setPower(0);
+        }
 
         // Calculate the power for each motor based on the joystick positions
         motorPowerValues = CalcDrivetrain(leftJoystick, rightJoystick);
