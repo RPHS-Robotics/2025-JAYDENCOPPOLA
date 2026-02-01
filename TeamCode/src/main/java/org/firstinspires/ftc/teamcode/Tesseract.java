@@ -19,6 +19,7 @@ public class Tesseract extends OpMode {
     public DcMotor motorBR;
     public DcMotor motorArmL;
     public DcMotor motorArmR;
+    public DcMotor motorRoller;
 
 
     public DcMotor[] motorArray;
@@ -72,6 +73,9 @@ public class Tesseract extends OpMode {
         motorArmL = hardwareMap.get(DcMotor.class, "ARML");
         motorArmR = hardwareMap.get(DcMotor.class, "ARMR");
 
+        motorRoller = hardwareMap.get(DcMotor.class, "ROLLER");
+
+
         // Put all the motors for the drive-chain in an array
         motorArray = new DcMotor[]{motorFL, motorFR, motorBL, motorBR};
 
@@ -83,6 +87,8 @@ public class Tesseract extends OpMode {
 
         motorArmL.setDirection(DcMotorSimple.Direction.FORWARD);
         motorArmR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motorRoller.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     @Override
@@ -104,6 +110,8 @@ public class Tesseract extends OpMode {
             motorArmL.setPower(0);
             motorArmR.setPower(0);
         }
+
+        motorRoller.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
 
         // Calculate the power for each motor based on the joystick positions
         motorPowerValues = CalcDrivetrain(leftJoystick, rightJoystick);
